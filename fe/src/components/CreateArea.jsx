@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import Zoom from "@material-ui/core/Zoom";
 import Fab from "@material-ui/core/Fab";
-import axios from 'axios';
+import axios from "axios";
+import qs from "qs";
 
 function CreateArea(props) {
   const [note, setNote] = useState({
@@ -24,39 +25,52 @@ function CreateArea(props) {
   function submitNote(event) {
     event.preventDefault();
 
+    const data = {
+      title: note.title,
+      content: note.content
+    };
     props.onAdd(note);
     // setNote({
     //   title: "",
     //   content: ""
     // });
+    console.log("data: ", data);
 
-    const data = {
-      title: note.title,
-      content: note.content,
+    const url="http://localhost:8082/api";
+    const options = {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify(data),
+      url,
     };
-
-
-    axios
-      .post('http://localhost:8082/api/books', data)
-      .then(res => {
-        this.setState({
-          title: '',
-          content:'',
-        })
-        this.props.history.push('/');
-      })
-      .catch(err => {
-        console.log("Error in CreateBook!");
-      })  
-    }
-
+    axios(options);
+    // axios
+    //   .post("http://localhost:8082/api",data,{ 
+    //     params: {
+    //     "mail": "ss",
+    //     "firstname": "ddd"
+    //   }},
+    //    { headers: { "Content-Type": "application/json" } })
+    //   .then(res => {
+    //     console.log(res);
+    //     // this.setState({
+    //     //   title: data.title,
+    //     //   content: data.content,
+    //     // })
+    //     // this.props.history.push('/');
+    //   })
+    //   .catch(err => {
+    //     console.log("Error in CreateBook! ", err);
+    //   })  
+    // }
+  }
   const [isExpanded, setExpanded] = useState(false);
   function click(event) {
     setExpanded(true);
   }
-  function mouseLeave(event) {
-    setExpanded(false);
-  }
+  // function mouseLeave(event) {
+  //   setExpanded(false);
+  // }
 
   return (
     <div>
@@ -86,5 +100,6 @@ function CreateArea(props) {
     </div>
   );
 }
+
 
 export default CreateArea;

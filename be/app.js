@@ -1,12 +1,19 @@
 //jshint esversion:6
 // app.js
 const routes = require('./api/books');
+var cors = require('cors');
 
 const connectDB = require('./config/db');
 
 const express = require('express');
-
 const app = express();
+const bodyParser = require('body-parser');
+app.use(cors({ origin: true, credentials: true }));
+
+// app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(express.static("public"));
 
 // Connect Database
 connectDB();
