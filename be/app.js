@@ -1,7 +1,8 @@
 //jshint esversion:6
 // app.js
+require('dotenv').config();
 const routes = require('./api/books');
-var cors = require('cors');
+const cors = require('cors');
 
 const connectDB = require('./config/db');
 
