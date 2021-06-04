@@ -29,40 +29,21 @@ function CreateArea(props) {
       title: note.title,
       content: note.content
     };
-    props.onAdd(note);
-    // setNote({
-    //   title: "",
-    //   content: ""
-    // });
-    console.log("data: ", data);
 
-    const url="http://localhost:8082/api";
+    const url="http://localhost:8082/api/add";
     const options = {
       method: 'POST',
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
       data: qs.stringify(data),
       url,
     };
-    axios(options);
-    // axios
-    //   .post("http://localhost:8082/api",data,{ 
-    //     params: {
-    //     "mail": "ss",
-    //     "firstname": "ddd"
-    //   }},
-    //    { headers: { "Content-Type": "application/json" } })
-    //   .then(res => {
-    //     console.log(res);
-    //     // this.setState({
-    //     //   title: data.title,
-    //     //   content: data.content,
-    //     // })
-    //     // this.props.history.push('/');
-    //   })
-    //   .catch(err => {
-    //     console.log("Error in CreateBook! ", err);
-    //   })  
-    // }
+    axios(options).then(res => {
+      console.log(res);
+      console.log("id:", res.data.id);
+      // props.onAdd(note);
+      // console.log("data: ", data);
+      props.onRefresh();
+    });
   }
   const [isExpanded, setExpanded] = useState(false);
   function click(event) {

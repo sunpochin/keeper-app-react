@@ -9,28 +9,23 @@ function App() {
 
   const [notes, setNotes] = useState([]);
 
-  useEffect(() => {
-    // Your code here
+  function refreshList() {
     axios
     .get('http://localhost:8082/api/list')
     .then(res => {
-      console.log("res: ", res.data);
-      setNotes(prev => {
-        return [...prev, res.data[0], res.data[1], res.data[2]]
-      });
-      // this.setState({
-      //   title: '',
-      //   content:'',
-      // })
-      // this.props.history.push('/');
+      const dataArray = res.data;
+      console.log(", dataArray: ", dataArray);
+      setNotes(dataArray);
     })
     .catch(err => {
       console.log("Error in CreateBook!");
     })  
+  }
+
+  useEffect(() => {
+    refreshList();
   }, []);
 
-  function init() {
-  }
 
   function addNote(newNote) {
     setNotes(prevNotes => {
@@ -49,15 +44,20 @@ function App() {
   return (
     <div>
       <Header />
-      <CreateArea onAdd={addNote} />
+      <CreateArea 
+        onAdd={addNote} 
+        onRefresh={refreshList}
+      />
       {notes.map((noteItem, index) => {
         return (
           <Note
-            key={index}
-            id={index}
+            key={noteItem._id}
+            id={noteItem._id}
+            index={index}
             title={noteItem.title}
             content={noteItem.content}
             onDelete={deleteNote}
+            onRefresh={refreshList}
           />
         );
       })}

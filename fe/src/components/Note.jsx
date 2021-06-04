@@ -1,10 +1,22 @@
 import React from "react";
 // import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import DeleteIcon from "@material-ui/icons/Delete";
+import axios from "axios";
 
 function Note(props) {
   function handleClick() {
-    props.onDelete(props.id);
+    axios
+    .delete("http://localhost:8082/api/" + props.id)
+    .then(res => {
+      console.log("res: ", res);
+      // setNotes(dataArray);
+      // props.onDelete(props.id);
+      props.onRefresh();
+      })
+    .catch(err => {
+      console.log("Error in delete: ",  + props.id);
+    })
+
   }
 
   return (
